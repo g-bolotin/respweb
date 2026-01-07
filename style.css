@@ -1,0 +1,20 @@
+*, /* all elements */
+*::before, /* all before/after pseudo elements */
+*::after {
+   box-sizing: border-box; /* ensures padding and border don't add onto element width or height but are included in the final size */
+} /* always have this, otherwise you might have weird issues with sizing elements */
+
+* {
+   margin: 0; /* ignores some default margins from web browsers */
+}
+
+a {
+   text-decoration: none; /* remove underline from links */
+}
+
+img,
+picture,
+svg {
+   max-width: 100%; /* images wont get larger than parent (no horiz scroll) */
+   display: block; /* removes space at bottom of inline elements, not needed for images */
+}
