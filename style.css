@@ -55,6 +55,7 @@
       --color-main-bg: var(--c-white);
       --color-text-dark: var(--c-gray-dark);
       --color-text-light: var(--c-white);
+      --color-header-bg: var(--c-purple);
       --color-hero-bg: var(--c-purple);
       --color-button-primary-bg: var(--c-teal);
       --color-button-primary-text: var(--c-gray-dark);
@@ -108,6 +109,7 @@
    picture,
    svg {
       max-width: 100%; /* images wont get larger than parent (no horiz scroll) */
+      height: auto;
       display: block; /* removes space at bottom of inline elements, not needed for images */
    }
 
@@ -124,6 +126,79 @@
 }
 
 @layer component {
+   .topnav {
+      background-color: var(--color-header-bg);
+
+      /* wrapper is flexbox parent, nav tag for links will be the children */
+      /* Flexbox: when you don't care about column sizes (ex. elems all in 1 row) */
+      /* Grid: when you need specific column sizes */
+
+      /* Flexboxes have 2 axes: main and cross (perpendicular to main) */
+      /* When setting flex-direction to row (default), main = horizontal */
+      /* When setting flex-direction to column, main = vertical */
+      /* https://css-tricks.com/snippets/css/a-guide-to-flexbox/ */
+      /* visuals in the link above, left side for parent, right side for children */
+
+      /* flexbox parent */
+      .topnav__wrapper {
+         display: flex;
+         align-items: center; /* not in links, bc the height of the links stretches to fit the tallest item (logo), the height of which is dictated by the header bounding box */
+         justify-content: space-between; /* aligns flexbox children at the start of the flexbox parent, works on main axis */
+         padding-block: 12px; /* vertical padding for header nav, pixels, don't want this to get bigger */
+
+         @media (width >= calc(600 / 16 * 1rem)) {
+            padding-block: 20px;
+         }
+      }
+
+      .topnav__homelink {
+         /* & indicates you want to target the homelink itself, not a child*/
+         /* pseudoclasses are selectors that indicate a change of state, written :classname, such as :hover */
+         &:hover {
+            opacity: 0.9;
+         }
+      }
+
+      .topnav__logo {
+         width: calc(70 / 16 * 1rem);
+         height: auto; /* maintain image ratio */
+
+         @media (width >= calc(600 / 16 * 1rem)) {
+            width: calc(128 / 16 * 1rem);
+         }
+      }
+
+      /* flex parent */
+      .topnav__links {
+         display: flex;
+         gap: 20px;
+         list-style-type: none; /* remove bullets from list */
+         padding: 0; /* remove default browser padding for ul */
+
+         /* media query to change gap btwn header links from 20px to 40px once the viewport is >600px*/
+         @media (width >= calc(600 / 16 * 1rem)) {
+            gap: 40px;
+         }
+      }
+
+      /* flex child, list item */
+      .topnav__item {
+      }
+
+      /* list links themselves */
+      .topnav__link {
+         font-size: var(--font-size-topnav);
+         font-weight: 700; /* bold */
+         letter-spacing: 0.05em; /* letter spacing, in Figma it'll be in %, here we use em units for scaling relative to font size */
+         text-transform: uppercase;
+         color: var(--color-text-light);
+         /* make sure color on links is set on the links itself to override purple default color*/
+         &:hover {
+            text-decoration: underline 2px;
+            text-underline-offset: 4px;
+         }
+      }
+   }
 }
 
 /* want utility layer to be able to override any other layers if it gets applied to a component */
@@ -138,5 +213,17 @@
       width: 1px; /* NOT 0px, otherwise it will cease to exist */
       height: 1px;
       overflow: hidden;
+
+      /* pseudoclasses like focus help you style an element when it's interacted with in a certain way or is in a state*/
+      /* ex. hover, focus, etc. */
+      /* useful for things like highlighting skip links for keyboard users */
+      &.skip:focus {
+         height: auto;
+         width: auto;
+         left: 0;
+         background: white;
+         padding: 10px;
+         border: 1px solid;
+      }
    }
 }
